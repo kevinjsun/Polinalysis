@@ -1,25 +1,6 @@
 /*************************************************************************
- *  Compilation:  javac DrawGUI.java
- *  Execution:    java DrawGUI
- *
- *  Standard drawing library. This class provides a basic capability for
- *  creating drawings with your programs. It uses a simple graphics model that
- *  allows you to create drawings consisting of points, lines, and curves
- *  in a window on your computer and to save the drawings to a file.
- *
- *  Todo
- *  ----
- *    -  Add support for gradient fill, etc.
- *    -  Fix setCanvasSize() so that it can only be called once.
- *    -  On some systems, drawing a line (or other shape) that extends way
- *       beyond canvas (e.g., to infinity) dimensions does not get drawn.
- *
- *  Remarks
- *  -------
- *    -  don't use AffineTransform for rescaling since it inverts
- *       images and strings
- *    -  careful using setFont in inner loop within an animation -
- *       it can cause flicker
+ *  Part of the Polinalysis Project
+ *  Authors: Kush Patel, Josh Shin, Kevin Sun, Aravind Yeduvaka, Jon Zhang
  *
  *************************************************************************/
 
@@ -211,7 +192,7 @@ public final class DrawGUI implements ActionListener, MouseListener, MouseMotion
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            // closes all windows
         // frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);      // closes only current window
-        frame.setTitle("");
+        frame.setTitle("Polinalysis");
         field =new JTextField(); 
         frame.add(field);
         field.setBounds(700,7,250,25);

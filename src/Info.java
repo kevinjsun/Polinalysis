@@ -1,3 +1,8 @@
+/*************************************************************************
+ *  Part of the Polinalysis Project
+ *  Authors: Kush Patel, Josh Shin, Kevin Sun, Aravind Yeduvaka, Jon Zhang
+ *
+ *************************************************************************/
 public class Info {
     public long[] time;
     public double[] mood;

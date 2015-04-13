@@ -1,3 +1,8 @@
+/*************************************************************************
+ *  Part of the Polinalysis Project
+ *  Authors: Kush Patel, Josh Shin, Kevin Sun, Aravind Yeduvaka, Jon Zhang
+ *
+ *************************************************************************/
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,28 +20,47 @@ import org.apache.http.util.EntityUtils;
 
 import twitter4j.JSONException;
 import twitter4j.JSONObject;
-import facebook4j.FacebookException;
-import facebook4j.Post;
+import twitter4j.Status;
 
-public class GetFbInfo {
-    static List<Post> statuses;
+public class GetTweetInfo {
 
-    public static void main(String[] args) throws JSONException,
-            FacebookException {
+    public static void main(String[] args) throws JSONException {
 
-        Info info = getStats(20);
+        Info info = getStats("@IndianasSweetie", 10);
         long[] time = info.time;
-        for (int i = 0; i < time.length; i++) {
-            System.out.println(info.liberal[i]);
-            System.out.println(info.tweets[i]);
-
-        }
-        System.out.println();
-        System.out.println();
-
+        double[] mood = info.mood;
+        double[] liberal = info.liberal;
+        double[] green = info.green;
+        double[] conservative = info.conservative;
+        double[] libertarian = info.libertarian;
+        String[] tweets = info.tweets;
+        StdOut.println("BarackObama:\ntime:");
+        for (long l : time)
+            StdOut.print(l + ",");
+        StdOut.println("\nmood:\n");
+        for (double d : mood)
+            StdOut.print(d + ",");
+        StdOut.println("\nliberal:\n");
+        for (double d : liberal)
+            StdOut.print(d + ",");
+        StdOut.println("\ngreen:\n");
+        for (double d : green)
+            StdOut.print(d+ ",");
+        StdOut.println("\nconservative:\n");
+        for (double d : conservative)
+            StdOut.print(d + ",");
+        StdOut.println("\nlibertarian:\n");
+        for (double d : libertarian)
+            StdOut.print(d + ",");
+        StdOut.println("\ntweets:\n");
+        for (String s: tweets)
+            StdOut.print("\""+s + "\"" + "\n");
+        
     }
 
-    public static Info getStats(int numStatuses) throws FacebookException {
+    public static Info getStats(String username, int numTweets) {
+        List<Status> statuses;
+
         HttpClient httpclient = new DefaultHttpClient();
         HttpClient httpclientPolitics = new DefaultHttpClient();
         long[] time = null;
@@ -50,7 +74,7 @@ public class GetFbInfo {
             // Add your data
 
             // Get twitter statuses
-            statuses = FacebookMain.getPosts(numStatuses);
+            statuses = TwitterMain.getTweets(username, numTweets);
 
             time = new long[statuses.size()];
             moodVal = new double[statuses.size()];
@@ -61,17 +85,15 @@ public class GetFbInfo {
 
             tweet = new String[statuses.size()];
             for (int i = 0; i < statuses.size(); i++) {
-                String s = statuses.get(i).getMessage();
+                String s = statuses.get(i).getText();
                 // System.out.println(s);
-                Date date = statuses.get(i).getUpdatedTime();
+                Date date = statuses.get(i).getCreatedAt();
                 // System.out.println(date);
-                for (int j = 0; j < 10; j++) {
-                    System.out.print("\"" + statuses.get(j).getMessage()
-                            + "\", ");
-                }
+
                 // mood
                 HttpPost httppost = new HttpPost(
-                        "http://apiv1.indico.io/sentiment");
+                        "http://apiv2.indico.io/sentiment?key=2fa1c629f9cb6f899db525e26a134c30");
+                        //"http://apiv1.indico.io/sentiment");
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
                         1);
                 nameValuePairs.add(new BasicNameValuePair("data", s));
@@ -79,7 +101,8 @@ public class GetFbInfo {
 
                 // politics
                 HttpPost httppostPolitics = new HttpPost(
-                        "http://apiv1.indico.io/political");
+                        "http://apiv2.indico.io/political?key=2fa1c629f9cb6f899db525e26a134c30");
+                        //"http://apiv1.indico.io/political");
                 List<NameValuePair> nameValuePairsPolitics = new ArrayList<NameValuePair>(
                         1);
                 nameValuePairsPolitics.add(new BasicNameValuePair("data", s));
@@ -100,7 +123,7 @@ public class GetFbInfo {
                     JSONObject objPolitics = new JSONObject(jsonStringPolitics);
                     // System.out.println(jsonStringPolitics);
 
-                    time[i] = statuses.get(i).getUpdatedTime().getTime();
+                    time[i] = statuses.get(i).getCreatedAt().getTime();
                     moodVal[i] = Double.parseDouble(obj.get("results")
                             .toString());
                     liberal[i] = Double.parseDouble(((JSONObject) objPolitics
@@ -115,7 +138,7 @@ public class GetFbInfo {
                             .parseDouble(((JSONObject) objPolitics
                                     .get("results")).get("Libertarian")
                                     .toString());
-                    tweet[i] = statuses.get(i).getMessage();
+                    tweet[i] = statuses.get(i).getText();
                     // System.out.println(obj.get("results"));
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

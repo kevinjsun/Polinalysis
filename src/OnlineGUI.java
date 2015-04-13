@@ -1,3 +1,8 @@
+/*************************************************************************
+ *  Part of the Polinalysis Project
+ *  Authors: Kush Patel, Josh Shin, Kevin Sun, Aravind Yeduvaka, Jon Zhang
+ *
+ *************************************************************************/
 import static com.googlecode.charts4j.Color.WHITE;
 
 import java.awt.Font;

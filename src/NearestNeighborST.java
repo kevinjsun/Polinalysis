@@ -1,4 +1,8 @@
-
+/*************************************************************************
+ *  Part of the Polinalysis Project
+ *  Authors: Kush Patel, Josh Shin, Kevin Sun, Aravind Yeduvaka, Jon Zhang
+ *
+ *************************************************************************/
 public class NearestNeighborST<Value> {
     
     private Node root;  //  top of our tree
