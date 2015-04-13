@@ -18,7 +18,6 @@ import twitter4j.JSONObject;
 import twitter4j.Status;
 
 public class GetTweetInfo {
-    static List<Status> statuses;
 
     public static void main(String[] args) throws JSONException {
 
@@ -55,6 +54,8 @@ public class GetTweetInfo {
     }
 
     public static Info getStats(String username, int numTweets) {
+        List<Status> statuses;
+
         HttpClient httpclient = new DefaultHttpClient();
         HttpClient httpclientPolitics = new DefaultHttpClient();
         long[] time = null;
@@ -86,7 +87,8 @@ public class GetTweetInfo {
 
                 // mood
                 HttpPost httppost = new HttpPost(
-                        "http://apiv1.indico.io/sentiment");
+                        "http://apiv2.indico.io/sentiment?key=2fa1c629f9cb6f899db525e26a134c30");
+                        //"http://apiv1.indico.io/sentiment");
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
                         1);
                 nameValuePairs.add(new BasicNameValuePair("data", s));
@@ -94,7 +96,8 @@ public class GetTweetInfo {
 
                 // politics
                 HttpPost httppostPolitics = new HttpPost(
-                        "http://apiv1.indico.io/political");
+                        "http://apiv2.indico.io/political?key=2fa1c629f9cb6f899db525e26a134c30");
+                        //"http://apiv1.indico.io/political");
                 List<NameValuePair> nameValuePairsPolitics = new ArrayList<NameValuePair>(
                         1);
                 nameValuePairsPolitics.add(new BasicNameValuePair("data", s));

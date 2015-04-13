@@ -9,6 +9,8 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterMain {
 
@@ -19,9 +21,17 @@ public class TwitterMain {
 
     public static List<Status> getTweets(String user, int tweets) {
         try {
-            Twitter twitter = new TwitterFactory().getInstance();
+            
+            ConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.setOAuthConsumerKey(consumerKeyStr);
+            builder.setOAuthConsumerSecret(consumerSecretStr);
+            Configuration configuration = builder.build();
+            TwitterFactory factory = new TwitterFactory(configuration);
+            Twitter twitter = factory.getInstance();
+            
+            //Twitter twitter = new TwitterFactory().getInstance();
 
-            twitter.setOAuthConsumer(consumerKeyStr, consumerSecretStr);
+            //twitter.setOAuthConsumer(consumerKeyStr, consumerSecretStr);
             AccessToken accessToken = new AccessToken(accessTokenStr,
                     accessTokenSecretStr);
 
@@ -32,16 +42,16 @@ public class TwitterMain {
             paging.count(tweets); // max statuses you can request for this call
 
             // Hashtags
-            Twitter twitterHashtags = TwitterFactory.getSingleton();
-            twitterHashtags.setOAuthConsumer(consumerKeyStr, consumerSecretStr);
-            AccessToken accessTokenHash = new AccessToken(accessTokenStr,
-                    accessTokenSecretStr);
+           // Twitter twitterHashtags = TwitterFactory.getSingleton();
+           // twitterHashtags.setOAuthConsumer(consumerKeyStr, consumerSecretStr);
+            //AccessToken accessTokenHash = new AccessToken(accessTokenStr,
+              //      accessTokenSecretStr);
 
-            twitterHashtags.setOAuthAccessToken(accessTokenHash);
+            //twitterHashtags.setOAuthAccessToken(accessTokenHash);
             if (user.charAt(0) == '#') {
                 Query query = new Query(user); // user is actually just the
                                                // hashtag
-                QueryResult result = twitterHashtags.search(query);
+                QueryResult result = twitter.search(query);
                 List<Status> statuses = new ArrayList<Status>();
 
                 for (int i = 0; i < tweets; i++) { // make sure not more than
